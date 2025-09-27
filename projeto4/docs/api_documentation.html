@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>API Titanic Evacuation Optimizer · Documentação</title>
+        <style>
+            :root {
+                color-scheme: dark light;
+                --bg-body: #0f172a;
+                --bg-panel: rgba(15, 23, 42, 0.9);
+                --bg-card: rgba(30, 41, 59, 0.85);
+                --bg-highlight: rgba(56, 189, 248, 0.14);
+                --border-color: rgba(148, 163, 184, 0.24);
+                --text-body: #e2e8f0;
+                --text-soft: #94a3b8;
+                --accent: #38bdf8;
+                --accent-strong: #22d3ee;
+                font-family: "Segoe UI", "Inter", system-ui, -apple-system, sans-serif;
+                line-height: 1.6;
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+
+            body {
+                margin: 0;
+                background: var(--bg-body);
+                color: var(--text-body);
+            }
+
+            header {
+                background: linear-gradient(140deg, #1e293b, #0f172a 60%, #1d4ed8);
+                padding: 48px 0 32px;
+                border-bottom: 1px solid var(--border-color);
+            }
+
+            .container {
+                width: min(1120px, 92vw);
+                margin: 0 auto;
+            }
+
+            nav {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 12px;
+                margin-top: 24px;
+            }
+
+            nav a {
+                color: var(--text-body);
+                text-decoration: none;
+                font-size: 0.95rem;
+                padding: 6px 14px;
+                border-radius: 999px;
+                background: rgba(148, 163, 184, 0.16);
+                transition: transform 0.2s ease, background 0.2s ease;
+            }
+
+            nav a:hover {
+                transform: translateY(-1px);
+                background: rgba(56, 189, 248, 0.24);
+                color: var(--accent-strong);
+            }
+
+            h1,
+            h2,
+            h3 {
+                color: var(--accent);
+                margin: 0 0 0.6rem;
+                font-weight: 600;
+            }
+
+            p {
+                margin-top: 0.4rem;
+            }
+
+            main {
+                padding: 48px 0 72px;
+            }
+
+            section {
+                margin-bottom: 64px;
+            }
+
+            section > header {
+                margin-bottom: 24px;
+            }
+
+            .card-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+                gap: 20px;
+            }
+
+            .card {
+                background: var(--bg-card);
+                border: 1px solid var(--border-color);
+                border-radius: 16px;
+                padding: 24px;
+                backdrop-filter: blur(24px);
+            }
+
+            .tag {
+                display: inline-flex;
+                padding: 4px 12px;
+                border-radius: 999px;
+                background: var(--bg-highlight);
+                color: var(--accent);
+                font-weight: 600;
+                font-size: 0.8rem;
+                letter-spacing: 0.06em;
+                text-transform: uppercase;
+                margin-right: 10px;
+            }
+
+            ul,
+            ol {
+                margin: 0.6rem 0 0.6rem 1.5rem;
+                padding: 0;
+            }
+
+            code {
+                font-family: "Fira Code", "Source Code Pro", monospace;
+                background: rgba(148, 163, 184, 0.14);
+                padding: 2px 6px;
+                border-radius: 6px;
+                font-size: 0.94rem;
+            }
+
+            pre {
+                background: var(--bg-panel);
+                padding: 20px;
+                border-radius: 16px;
+                border: 1px solid rgba(56, 189, 248, 0.3);
+                overflow-x: auto;
+                font-size: 0.92rem;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 16px;
+                border: 1px solid var(--border-color);
+                border-radius: 16px;
+                overflow: hidden;
+            }
+
+            th,
+            td {
+                padding: 14px 18px;
+                text-align: left;
+                border-bottom: 1px solid rgba(148, 163, 184, 0.16);
+            }
+
+            th {
+                background: rgba(56, 189, 248, 0.14);
+                color: var(--accent-strong);
+                font-weight: 600;
+                text-transform: uppercase;
+                font-size: 0.78rem;
+                letter-spacing: 0.08em;
+            }
+
+            tr:last-child td {
+                border-bottom: none;
+            }
+
+            .method {
+                display: inline-flex;
+                font-weight: 700;
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+                padding: 4px 10px;
+                border-radius: 999px;
+                font-size: 0.75rem;
+            }
+
+            .method.get {
+                background: rgba(56, 189, 248, 0.16);
+                color: var(--accent);
+            }
+
+            .method.post {
+                background: rgba(16, 185, 129, 0.18);
+                color: #4ade80;
+            }
+
+            details {
+                background: var(--bg-panel);
+                border: 1px solid var(--border-color);
+                border-radius: 16px;
+                padding: 16px 24px;
+                margin-top: 18px;
+            }
+
+            summary {
+                cursor: pointer;
+                font-weight: 600;
+                color: var(--accent);
+            }
+
+            summary::marker {
+                color: var(--accent-strong);
+            }
+
+            a {
+                color: var(--accent);
+            }
+
+            footer {
+                text-align: center;
+                padding: 28px;
+                border-top: 1px solid var(--border-color);
+                color: var(--text-soft);
+                background: #0b1120;
+            }
+
+            @media (max-width: 720px) {
+                header {
+                    padding: 40px 0 24px;
+                }
+
+                nav {
+                    flex-direction: column;
+                    align-items: stretch;
+                }
+
+                table {
+                    display: block;
+                    overflow-x: auto;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <div class="container">
+                <p class="tag">Projeto FGV Comunicações</p>
+                <h1>API Titanic Evacuation Optimizer</h1>
+                <p>
+                    Simulador completo de planos de evacuação baseado em dados históricos do
+                    Titanic, implementado com <strong>FastAPI</strong> e otimização via
+                    simulação Monte Carlo.
+                </p>
+                <nav>
+                    <a href="#inicio">Início rápido</a>
+                    <a href="#modelos">Modelos de dados</a>
+                    <a href="#endpoints">Mapa de endpoints</a>
+                    <a href="#otimizacao">Otimização</a>
+                    <a href="#estatisticas">Consultas analíticas</a>
+                    <a href="#boas-praticas">Boas práticas</a>
+                </nav>
+            </div>
+        </header>
+
+        <main class="container">
+            <section id="inicio">
+                <header>
+                    <h2>🚀 Início rápido</h2>
+                    <p>
+                        Passo a passo para executar o projeto localmente. Recomendamos Python
+                        3.10+.
+                    </p>
+                </header>
+                <div class="card-grid">
+                    <article class="card">
+                        <h3>Configuração</h3>
+                        <ol>
+                            <li>
+                                (Opcional) Crie um ambiente virtual:
+                                <code>python -m venv .venv</code>
+                            </li>
+                            <li>
+                                Instale dependências:
+                                <code>pip install -r requirements.txt</code>
+                            </li>
+                        </ol>
+                    </article>
+                    <article class="card">
+                        <h3>Execução</h3>
+                        <ol>
+                            <li>
+                                Inicie o servidor:
+                                <code>uvicorn main:app --reload --port 8007</code>
+                            </li>
+                            <li>
+                                Acesse <code>http://localhost:8007</code> para visualizar esta
+                                documentação embutida.
+                            </li>
+                        </ol>
+                    </article>
+                    <article class="card">
+                        <h3>Dependências-chave</h3>
+                        <ul>
+                            <li><code>fastapi</code> · API moderna com tipagem</li>
+                            <li><code>pandas</code> · Manipulação de dados históricos</li>
+                            <li><code>pydantic</code> · Validação de payloads</li>
+                            <li><code>uvicorn</code> · Servidor ASGI</li>
+                        </ul>
+                    </article>
+                </div>
+                <details>
+                    <summary>Usando outra porta ou host</summary>
+                    <p>
+                        Ajuste a flag <code>--port</code> e, se necessário,
+                        <code>--host</code>. Exemplo:
+                        <code>uvicorn main:app --reload --host 0.0.0.0 --port 8000</code>.
+                        Atualize também as URLs de consumo da API.
+                    </p>
+                </details>
+            </section>
+
+            <section id="modelos">
+                <header>
+                    <h2>🧱 Modelos de dados</h2>
+                    <p>
+                        Estruturas principais utilizadas para entrada e saída do endpoint de
+                        otimização.
+                    </p>
+                </header>
+                <div class="card-grid">
+                    <article class="card">
+                        <h3><code>EvacuationConstraints</code></h3>
+                        <ul>
+                            <li>
+                                <strong>total_lifeboat_capacity</strong> · capacidade combinada
+                                dos botes (int)
+                            </li>
+                            <li>
+                                <strong>max_evacuation_time</strong> · tempo máximo em minutos
+                                (int)
+                            </li>
+                            <li>
+                                <strong>crew_members</strong> · tamanho da tripulação (int)
+                            </li>
+                            <li>
+                                <strong>priority_system</strong> · enum (women_children_first,
+                                class_based, age_based, disability_first, random,
+                                optimal_survival)
+                            </li>
+                            <li>
+                                <strong>consider_mobility</strong> · considera mobilidade
+                                reduzida (bool)
+                            </li>
+                            <li>
+                                <strong>panic_factor</strong> · fator de pânico (0–1, float)
+                            </li>
+                        </ul>
+                    </article>
+
+                    <article class="card">
+                        <h3><code>EvacuationRequest</code></h3>
+                        <ul>
+                            <li>
+                                <strong>constraints</strong> · objeto
+                                <code>EvacuationConstraints</code>
+                            </li>
+                            <li>
+                                <strong>optimize_for</strong> · objetivo da simulação (max_survivors |
+                                min_time | fairness | balanced)
+                            </li>
+                            <li>
+                                <strong>simulation_runs</strong> · número de execuções Monte
+                                Carlo (int)
+                            </li>
+                        </ul>
+                    </article>
+
+                    <article class="card">
+                        <h3><code>EvacuationPlan</code> · resposta</h3>
+                        <ul>
+                            <li><strong>plan_id</strong> · identificador único</li>
+                            <li>
+                                <strong>total_evacuated</strong>,
+                                <strong>survival_rate</strong>,
+                                <strong>total_time_minutes</strong>
+                            </li>
+                            <li><strong>fairness_score</strong> · 0–1</li>
+                            <li>
+                                <strong>lifeboat_assignments</strong> · passageiros por bote e
+                                ordem de lançamento
+                            </li>
+                            <li>
+                                <strong>evacuation_phases</strong> · fases sugeridas da operação
+                            </li>
+                            <li>
+                                <strong>optimization_metrics</strong>,
+                                <strong>recommendations</strong>
+                            </li>
+                        </ul>
+                    </article>
+                </div>
+            </section>
+
+            <section id="endpoints">
+                <header>
+                    <h2>🗺️ Mapa de endpoints</h2>
+                    <p>Resumo dos recursos REST expostos pela API.</p>
+                </header>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Método</th>
+                            <th>Endpoint</th>
+                            <th>Descrição</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="method get">GET</span></td>
+                            <td><code>/</code></td>
+                            <td>Retorna esta documentação HTML.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="method get">GET</span></td>
+                            <td><code>/passengers</code></td>
+                            <td>Lista paginável (<code>limit</code>, <code>offset</code>).</td>
+                        </tr>
+                        <tr>
+                            <td><span class="method get">GET</span></td>
+                            <td><code>/passengers/statistics</code></td>
+                            <td>Resumo rápido (total e taxa média de sobrevivência).</td>
+                        </tr>
+                        <tr>
+                            <td><span class="method get">GET</span></td>
+                            <td><code>/passengers/by-class</code></td>
+                            <td>Contagem por classe (<code>Pclass</code>).</td>
+                        </tr>
+                        <tr>
+                            <td><span class="method get">GET</span></td>
+                            <td><code>/passengers/age-distribution</code></td>
+                            <td>Estatísticas descritivas de idade.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="method get">GET</span></td>
+                            <td><code>/passengers/survival-heatmap</code></td>
+                            <td>Taxa média de sobrevivência por classe.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="method get">GET</span></td>
+                            <td><code>/passenger/{passenger_id}</code></td>
+                            <td>Detalhes individuais sanitizados.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="method post">POST</span></td>
+                            <td><code>/api/v1/optimize/evacuation-plan</code></td>
+                            <td>Gera plano otimizado de evacuação.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="method get">GET</span></td>
+                            <td><code>/api/v1/optimize/passengers/summary</code></td>
+                            <td>Distribuições por classe, gênero, porto e família.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="method get">GET</span></td>
+                            <td><code>/api/v1/optimize/historical-survival</code></td>
+                            <td>Taxas históricas segmentadas.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="method get">GET</span></td>
+                            <td><code>/api/v1/optimize/evacuation-plan/constraints-info</code></td>
+                            <td>Metadados e limites das configurações.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section id="otimizacao">
+                <header>
+                    <h2>🛟 Endpoint de otimização</h2>
+                    <p>
+                        Principal recurso da API. Executa simulações Monte Carlo e devolve um
+                        plano completo de evacuação.
+                    </p>
+                </header>
+                <div class="card">
+                    <p>
+                        <span class="method post">POST</span>
+                        <code>/api/v1/optimize/evacuation-plan</code>
+                    </p>
+                    <h3>Campos obrigatórios</h3>
+                    <ul>
+                        <li>
+                            <code>constraints.total_lifeboat_capacity</code> · capacidade
+                            total dos botes
+                        </li>
+                        <li>
+                            <code>constraints.max_evacuation_time</code> · tempo máximo (min)
+                        </li>
+                        <li>
+                            <code>constraints.priority_system</code> · estratégia (enum)
+                        </li>
+                        <li>
+                            <code>constraints.panic_factor</code> · intensidade do pânico (0–1)
+                        </li>
+                        <li>
+                            <code>constraints.consider_mobility</code> · considerar mobilidade
+                        </li>
+                        <li><code>optimize_for</code> · objetivo (default: max_survivors)</li>
+                        <li><code>simulation_runs</code> · número de simulações</li>
+                    </ul>
+
+                    <details open>
+                        <summary>Exemplo de payload JSON</summary>
+                        <pre><code>{
+    "constraints": {
+        "total_lifeboat_capacity": 1178,
+        "max_evacuation_time": 120,
+        "priority_system": "women_children_first",
+        "panic_factor": 0.15,
+        "consider_mobility": true
+    },
+    "optimize_for": "max_survivors",
+    "simulation_runs": 500
+}</code></pre>
+                    </details>
+
+                    <details>
+                        <summary>Consumindo com <code>requests</code></summary>
+                        <pre><code>import json
+import requests
+
+url = "http://localhost:8000/api/v1/optimize/evacuation-plan"
+payload = {
+        "constraints": {
+                "total_lifeboat_capacity": 1178,
+                "max_evacuation_time": 120,
+                "priority_system": "women_children_first",
+                "panic_factor": 0.15,
+                "consider_mobility": True
+        },
+        "optimize_for": "max_survivors",
+        "simulation_runs": 500
+}
+
+response = requests.post(url, json=payload)
+print(response.status_code)
+print(json.dumps(response.json(), indent=2, ensure_ascii=False))</code></pre>
+                    </details>
+
+                    <h3>Saída principal</h3>
+                    <ul>
+                        <li>
+                            <code>total_evacuated</code>, <code>survival_rate</code>,
+                            <code>total_time_minutes</code>
+                        </li>
+                        <li>
+                            <code>fairness_score</code> · equilíbrio entre classes e gêneros
+                        </li>
+                        <li>
+                            <code>lifeboat_assignments</code> · passageiros designados por bote
+                        </li>
+                        <li>
+                            <code>evacuation_phases</code> · roteiro sugerido
+                        </li>
+                        <li>
+                            <code>recommendations</code> · ações sugeridas quando indicadores
+                            estão baixos
+                        </li>
+                        <li>
+                            <code>optimization_metrics</code> · parâmetros internos, score e
+                            taxa de utilização da frota
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="estatisticas">
+                <header>
+                    <h2>📊 Consultas de passageiros &amp; estatísticas</h2>
+                    <p>
+                        Utilize estes endpoints para enriquecer dashboards, análises e
+                        relatórios.
+                    </p>
+                </header>
+                <div class="card-grid">
+                    <article class="card">
+                        <h3>Listagem</h3>
+                        <ul>
+                            <li>
+                                <span class="method get">GET</span>
+                                <code>/passengers</code> · suporta <code>limit</code> e
+                                <code>offset</code>
+                            </li>
+                            <li>
+                                <span class="method get">GET</span>
+                                <code>/passenger/{id}</code> · dados sanitizados (sem
+                                <code>NaN</code>)
+                            </li>
+                        </ul>
+                    </article>
+
+                    <article class="card">
+                        <h3>Estatísticas rápidas</h3>
+                        <ul>
+                            <li><code>/passengers/statistics</code></li>
+                            <li><code>/passengers/by-class</code></li>
+                            <li><code>/passengers/age-distribution</code></li>
+                            <li><code>/passengers/survival-heatmap</code></li>
+                        </ul>
+                    </article>
+
+                    <article class="card">
+                        <h3>Insights avançados</h3>
+                        <ul>
+                            <li>
+                                <code>/api/v1/optimize/passengers/summary</code> · visão geral de
+                                classe, gênero, porto e família
+                            </li>
+                            <li>
+                                <code>/api/v1/optimize/historical-survival</code> · cortes por
+                                idade, origem e status familiar
+                            </li>
+                            <li>
+                                <code>/api/v1/optimize/evacuation-plan/constraints-info</code> ·
+                                parâmetros disponíveis na simulação
+                            </li>
+                        </ul>
+                    </article>
+                </div>
+            </section>
+
+            <section id="boas-praticas">
+                <header>
+                    <h2>📌 Boas práticas &amp; próximos passos</h2>
+                </header>
+                <div class="card-grid">
+                    <article class="card">
+                        <h3>Recomendações</h3>
+                        <ul>
+                            <li>
+                                Compare múltiplas políticas ajustando
+                                <code>priority_system</code>
+                            </li>
+                            <li>
+                                Persista <code>EvacuationPlan</code> para análises históricas
+                            </li>
+                            <li>
+                                Integre em dashboards (Streamlit, Power BI, Superset, etc.)
+                            </li>
+                        </ul>
+                    </article>
+                    <article class="card">
+                        <h3>Onde editar</h3>
+                        <p>
+                            Explore <code>projeto4/src/optimize_simulator_endpoints.py</code> para personalizar regras
+                            de prioridade, recomendações e a lógica de Monte Carlo.
+                        </p>
+                    </article>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            Projeto FGV Comunicações — Titanic Data &amp; Evacuation Simulator
+        </footer>
+    </body>
+</html>
